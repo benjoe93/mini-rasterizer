@@ -17,8 +17,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(minifb)
 
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.c")
-file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "include/*.h")
+set(SOURCES
+    "src/main.c"
+    "src/file_utils.c"
+)
+
+set(HEADERS
+    "include/file_utils.h"
+)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 

@@ -1,29 +1,34 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-
+#include <file_utils.h>
+#include <stdlib.h>
+#include <types.h>
 
 #define WIDTH 800
 #define HEIGHT 600
+#define MAXVAL 255
 
-#define OUT_PATH = "../../save/out.ppm"
+#define OUT_PATH "../../saved/out.ppm"
 
 int main() {
-    printf("Hello world!\n");
+    const ImgDetails img = {OUT_PATH, WIDTH, HEIGHT, MAXVAL};
 
-
-    // open file
-    FILE *file = fopen("../../save/out.txt", "w");
-    if (file == NULL) {
-        printf("Error opening file!\n");
-        return 1;
+    // clear screen
+    Color clear_color = {26, 34, 56};
+    Color *colors = malloc(WIDTH * HEIGHT * sizeof(Color));
+    for (int i = 0; i < WIDTH * HEIGHT; i++) {
+        colors[i] = clear_color;
     }
 
-    // write file
-    fprintf(file, "Hello world from C!\n");
-    fputs("This is using fputs haha\n", file);
+    // draw line middle of the image
+    int target_y = HEIGHT / 2;
+    Color line_color = {255, 0, 0};
 
-    // close file
-    fclose(file);
+    for (int x = 0; x < WIDTH; x++) {
+        const int index = x + (target_y * WIDTH);
+        colors[index] = line_color;
+    }
 
+    // update image
+    WriteToPpm(&img, colors);
     return 0;
 }

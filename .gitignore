@@ -2,6 +2,7 @@
 intermediate/
 external/
 bin/
+saved/
 
 # Prerequisites
 *.d
