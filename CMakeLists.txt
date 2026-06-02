@@ -20,10 +20,12 @@ FetchContent_MakeAvailable(minifb)
 set(SOURCES
     "src/main.c"
     "src/file_utils.c"
+    "src/renderer.c"
 )
 
 set(HEADERS
     "include/file_utils.h"
+    "include/renderer.h"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

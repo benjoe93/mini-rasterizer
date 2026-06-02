@@ -2,6 +2,7 @@
 #include <file_utils.h>
 #include <stdlib.h>
 #include <types.h>
+#include "renderer.h"
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -12,23 +13,20 @@
 int main() {
     const ImgDetails img = {OUT_PATH, WIDTH, HEIGHT, MAXVAL};
 
+    const Color clear_color = {26, 34, 56};
+    Color *buffer = malloc(WIDTH * HEIGHT * sizeof(Color));
+
     // clear screen
-    Color clear_color = {26, 34, 56};
-    Color *colors = malloc(WIDTH * HEIGHT * sizeof(Color));
-    for (int i = 0; i < WIDTH * HEIGHT; i++) {
-        colors[i] = clear_color;
-    }
+    ClearScreen(buffer, WIDTH, HEIGHT, clear_color);
 
     // draw line middle of the image
-    int target_y = HEIGHT / 2;
     Color line_color = {255, 0, 0};
+    DrawHorizontalLine(buffer, WIDTH, 4, 0, WIDTH, line_color);
 
-    for (int x = 0; x < WIDTH; x++) {
-        const int index = x + (target_y * WIDTH);
-        colors[index] = line_color;
-    }
+    line_color = (Color){0, 255, 0};
+    DrawVerticalLine(buffer, WIDTH, 4, 0, HEIGHT, line_color);
 
     // update image
-    WriteToPpm(&img, colors);
+    WriteToPpm(&img, buffer);
     return 0;
 }
