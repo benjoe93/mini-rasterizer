@@ -1,25 +1,23 @@
 // File handling utilities
-
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <file_utils.h>
+#include "file_utils.h"
 
-void WriteToPpm(const ImgDetails* image, const Color* colors) {
+void WriteToPpm(const ImgBuffer* buffer, const ImgDetails* image) {
     // open file
-    FILE *file = fopen(image->path, "w");
+    FILE* file = fopen(image->path, "w");
     if (file == NULL) {
-        printf("Error opening file!\n");
+        fprintf(stderr,"Error opening file!\n");
         return;
     }
 
     // write file
     fputs("P3\n", file); // ppm header
-    fprintf(file, "%d %d\n", image->width, image->height);
-    fprintf(file, "%d\n", image->max_val);
+    fprintf(file, "%u %u\n", buffer->width, buffer->height);
+    fprintf(file, "%u\n", image->max_val);
 
     // pixels
-    for (int i = 0; i < image->height * image->width; i++) {
-        fprintf(file, "%d %d %d\n", colors[i].R, colors[i].G, colors[i].B);
+    for (unsigned int i = 0; i < buffer->height * buffer->width; i++) {
+        fprintf(file, "%u %u %u\n", buffer->pixels[i].R, buffer->pixels[i].G, buffer->pixels[i].B);
     }
 
     // close file

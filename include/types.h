@@ -1,17 +1,31 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef MINI_RASTERIZER_TYPES_H
+#define MINI_RASTERIZER_TYPES_H
+#include <stdint.h>
 
-typedef struct {
+/**
+ * RGB Color definition
+ */
+typedef struct Color {
+    uint8_t R;
+    uint8_t G;
+    uint8_t B;
+} Color;
+
+/**
+ * Export related image file details
+ */
+typedef struct ImgDetails {
     const char* path;
-    int width;
-    int height;
-    int max_val;
-}ImgDetails;
+    uint8_t max_val;
+} ImgDetails;
 
-typedef struct {
-    int R;
-    int G;
-    int B;
-}Color;
+/**
+ * Texture buffer details
+ */
+typedef struct ImgBuffer {
+    Color* pixels;
+    unsigned int width;
+    unsigned int height;
+} ImgBuffer;
 
-#endif
+#endif // MINI_RASTERIZER_TYPES_H
