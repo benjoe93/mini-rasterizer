@@ -5,7 +5,7 @@
 - [x] Fill screen with solid color
 - [x] Draw horizontal line
 - [x] Draw vertical line
-- [ ] Draw arbitrary line (Bresenham's line algorithm)
+- [x] Draw arbitrary line (Bresenham's line algorithm)
 - [ ] Draw rectangle (filled and outline)
 - [ ] Draw circle (midpoint circle algorithm)
 
