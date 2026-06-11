@@ -1,5 +1,6 @@
 #include "file_utils.h"
 #include "renderer.h"
+#include "types.h"
 #include <stdlib.h>
 
 #define WIDTH 800
@@ -45,7 +46,11 @@ int main() {
     DrawLine(&buffer, 79, 321, 220, 80, line_color);
     DrawLine(&buffer, 65, 335, 186, 114, line_color);
 
-    DrawRectangle(&buffer, 700, 500, 550, 350, line_color);
+    Point2D p0 = {.x = 700, .y = 550};
+    Point2D p1 = {.x = 500, .y = 350};
+    Point2D p2 = {.x = 200, .y = 150};
+    Point2D p3 = {.x = 300, .y = 50};
+    DrawRectangle(&buffer, p0, p1, p2, p3, line_color);
 
     // update image
     WriteToPpm(&buffer, &img);
