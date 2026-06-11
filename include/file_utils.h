@@ -9,6 +9,6 @@
  * @param buffer Buffer containing per pixel data
  * @param image Export related ImageDetails
  */
-void WriteToPpm(const ImgBuffer* buffer, const ImgDetails* image);
+void WriteToPpm(const ImgBuffer *buffer, const ImgDetails *image);
 
-#endif //MINI_RASTERIZER_FILE_UTILS_H
+#endif // MINI_RASTERIZER_FILE_UTILS_H

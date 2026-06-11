@@ -1,27 +1,23 @@
-#include <stdlib.h>
 #include "file_utils.h"
 #include "renderer.h"
+#include <stdlib.h>
 
 #define WIDTH 800
 #define HEIGHT 600
 #define MAX_COLOR_VALUE 255
 
-#define OUT_PATH "../../saved/out.ppm"
+#define OUT_PATH "../saved/out.ppm"
 
 int main() {
     const ImgDetails img = {OUT_PATH, MAX_COLOR_VALUE};
 
     const Color clear_color = {26, 34, 56};
 
-    Color* pixels = malloc(WIDTH * HEIGHT * sizeof(Color));
+    Color *pixels = malloc(WIDTH * HEIGHT * sizeof(Color));
     if (!pixels)
         return 1;
 
-    ImgBuffer buffer = {
-        pixels,
-        WIDTH,
-        HEIGHT
-    };
+    ImgBuffer buffer = {pixels, WIDTH, HEIGHT};
 
     // clear screen
     ClearScreen(&buffer, clear_color);
@@ -49,12 +45,13 @@ int main() {
     DrawLine(&buffer, 79, 321, 220, 80, line_color);
     DrawLine(&buffer, 65, 335, 186, 114, line_color);
 
+    DrawRectangle(&buffer, 700, 500, 550, 350, line_color);
 
     // update image
     WriteToPpm(&buffer, &img);
 
     free(pixels);
-    pixels = NULL;
-    buffer.pixels = NULL;
+    pixels = nullptr;
+    buffer.pixels = nullptr;
     return 0;
 }

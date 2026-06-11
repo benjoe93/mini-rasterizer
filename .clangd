@@ -1,0 +1,6 @@
+CompileFlags:
+  CompilationDatabase: "intermediate/cmake"
+
+Style:
+  BasedOnStyle: LLVM
+  IndentWidth: 4

@@ -6,26 +6,31 @@
  * RGB Color definition
  */
 typedef struct Color {
-    uint8_t R;
-    uint8_t G;
-    uint8_t B;
+  uint8_t R;
+  uint8_t G;
+  uint8_t B;
 } Color;
+
+typedef struct Point2D {
+  unsigned int x;
+  unsigned int y;
+} Point2D;
 
 /**
  * Export related image file details
  */
 typedef struct ImgDetails {
-    const char* path;
-    uint8_t max_val;
+  const char *path;
+  uint8_t max_val;
 } ImgDetails;
 
 /**
  * Texture buffer details
  */
 typedef struct ImgBuffer {
-    Color* pixels;
-    unsigned int width;
-    unsigned int height;
+  Color *pixels;
+  unsigned int width;
+  unsigned int height;
 } ImgBuffer;
 
 #endif // MINI_RASTERIZER_TYPES_H
