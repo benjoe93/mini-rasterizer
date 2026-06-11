@@ -3,7 +3,11 @@
   "configurePresets": [
     {
       "name": "default",
-      "binaryDir": "${sourceDir}/intermediate/cmake"
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/intermediate/cmake",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
     }
   ],
   "buildPresets": [
