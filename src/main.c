@@ -15,8 +15,7 @@ int main() {
     const color_t clear_color = {26, 34, 56};
 
     color_t *pixels = malloc(WIDTH * HEIGHT * sizeof(color_t));
-    if (!pixels)
-        return 1;
+    if (!pixels) { return 1; }
 
     img_buffer_t buffer = {pixels, WIDTH, HEIGHT};
 
@@ -57,7 +56,7 @@ int main() {
     WriteToPpm(&buffer, &img);
 
     free(pixels);
-    pixels = nullptr;
-    buffer.pixels = nullptr;
+    pixels = NULL;
+    buffer.pixels = NULL;
     return 0;
 }
