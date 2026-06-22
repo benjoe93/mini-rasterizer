@@ -2,7 +2,7 @@
 #include "file_utils.h"
 #include <stdio.h>
 
-void WriteToPpm(const ImgBuffer *buffer, const ImgDetails *image) {
+void WriteToPpm(const img_buffer_t *buffer, const img_details_t *image) {
   // open file
   FILE *file = fopen(image->path, "w");
   if (file == NULL) {

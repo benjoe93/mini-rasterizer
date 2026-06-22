@@ -5,32 +5,32 @@
 /**
  * RGB Color definition
  */
-typedef struct Color {
+typedef struct color {
   uint8_t R;
   uint8_t G;
   uint8_t B;
-} Color;
+} color_t;
 
-typedef struct Point2D {
+typedef struct point2d {
   unsigned int x;
   unsigned int y;
-} Point2D;
+} point2d_t;
 
 /**
  * Export related image file details
  */
-typedef struct ImgDetails {
+typedef struct img_details {
   const char *path;
   uint8_t max_val;
-} ImgDetails;
+} img_details_t;
 
 /**
  * Texture buffer details
  */
-typedef struct ImgBuffer {
-  Color *pixels;
+typedef struct img_buffer {
+  color_t *pixels;
   unsigned int width;
   unsigned int height;
-} ImgBuffer;
+} img_buffer_t;
 
 #endif // MINI_RASTERIZER_TYPES_H

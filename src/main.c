@@ -10,29 +10,29 @@
 #define OUT_PATH "../saved/out.ppm"
 
 int main() {
-    const ImgDetails img = {OUT_PATH, MAX_COLOR_VALUE};
+    const img_details_t img = {OUT_PATH, MAX_COLOR_VALUE};
 
-    const Color clear_color = {26, 34, 56};
+    const color_t clear_color = {26, 34, 56};
 
-    Color *pixels = malloc(WIDTH * HEIGHT * sizeof(Color));
+    color_t *pixels = malloc(WIDTH * HEIGHT * sizeof(color_t));
     if (!pixels)
         return 1;
 
-    ImgBuffer buffer = {pixels, WIDTH, HEIGHT};
+    img_buffer_t buffer = {pixels, WIDTH, HEIGHT};
 
     // clear screen
     ClearScreen(&buffer, clear_color);
 
     // draw line middle of the image
-    Color line_color = {255, 0, 0};
+    color_t line_color = {255, 0, 0};
     DrawHorizontalLine(&buffer, 300, 0, WIDTH, line_color);
 
     DrawVerticalLine(&buffer, 400, 0, HEIGHT, line_color);
 
-    line_color = (Color){255, 255, 0};
+    line_color = (color_t){255, 255, 0};
     DrawLine(&buffer, 790, 10, 10, 590, line_color);
 
-    line_color = (Color){0, 255, 0};
+    line_color = (color_t){0, 255, 0};
     DrawLine(&buffer, 60, 340, 150, 150, line_color);
     DrawLine(&buffer, 65, 335, 114, 186, line_color);
     DrawLine(&buffer, 79, 321, 80, 220, line_color);
@@ -46,11 +46,12 @@ int main() {
     DrawLine(&buffer, 79, 321, 220, 80, line_color);
     DrawLine(&buffer, 65, 335, 186, 114, line_color);
 
-    Point2D p0 = {.x = 700, .y = 550};
-    Point2D p1 = {.x = 500, .y = 350};
-    Point2D p2 = {.x = 200, .y = 150};
-    Point2D p3 = {.x = 300, .y = 50};
-    DrawRectangle(&buffer, p0, p1, p2, p3, line_color);
+    // Draw axis-aligned rectangle
+    line_color = (color_t){0, 255, 125};
+    color_t fill_color = {0, 125, 255};
+    point2d_t p0 = {.x = 700, .y = 550};
+    point2d_t p1 = {.x = 500, .y = 350};
+    DrawRectangle(&buffer, p0, p1, true, true, line_color, fill_color);
 
     // update image
     WriteToPpm(&buffer, &img);
