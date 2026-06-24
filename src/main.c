@@ -9,7 +9,7 @@
 
 #define OUT_PATH "../saved/out.ppm"
 
-int main() {
+int main(void) {
     const img_details_t img = {OUT_PATH, MAX_COLOR_VALUE};
 
     const color_t clear_color = {26, 34, 56};
@@ -48,9 +48,7 @@ int main() {
     // Draw axis-aligned rectangle
     line_color = (color_t){0, 255, 125};
     color_t fill_color = {0, 125, 255};
-    point2d_t p0 = {.x = 700, .y = 550};
-    point2d_t p1 = {.x = 500, .y = 350};
-    DrawRectangle(&buffer, p0, p1, true, true, line_color, fill_color);
+    DrawRectangle(&buffer, 700, 550, 500, 350, true, true, line_color, fill_color);
 
     // update image
     WriteToPpm(&buffer, &img);

@@ -13,12 +13,11 @@ void WriteToPpm(const img_buffer_t *buffer, const img_details_t *image) {
   // write file
   fputs("P3\n", file); // ppm header
   fprintf(file, "%u %u\n", buffer->width, buffer->height);
-  fprintf(file, "%u\n", image->max_val);
+  fprintf(file, "%u\n", (unsigned int)image->max_val);
 
   // pixels
-  for (unsigned int i = 0; i < buffer->height * buffer->width; i++) {
-    fprintf(file, "%u %u %u\n", buffer->pixels[i].R, buffer->pixels[i].G,
-            buffer->pixels[i].B);
+  for (size_t i = 0; i < (size_t)buffer->height * buffer->width; i++) {
+    fprintf(file, "%u %u %u\n", buffer->pixels[i].r, buffer->pixels[i].g, buffer->pixels[i].b);
   }
 
   // close file

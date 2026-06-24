@@ -28,7 +28,7 @@ The minifb dependency is fetched automatically via `FetchContent` on first confi
 
 ## Architecture
 
-This is a C11 software rasterizer learning project. Progress and next steps are tracked in `LEARNING_PLAN.md`. The current output path is PPM file rendering (`saved/out.ppm`); a live window path via minifb exists in `src/minifb_setup.c` but is not yet wired into `main`.
+This is a C99 software rasterizer learning project. Progress and next steps are tracked in `LEARNING_PLAN.md`. The current output path is PPM file rendering (`saved/out.ppm`); a live window path via minifb exists in `src/minifb_setup.c` but is not yet wired into `main`.
 
 **Core types** (`include/types.h`): `Color` (R/G/B ints) and `ImgDetails` (path, width, height, max_val) are the primitive data types used throughout.
 
