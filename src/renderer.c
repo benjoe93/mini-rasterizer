@@ -182,3 +182,43 @@ void DrawRectangle(img_buffer_t* buffer, unsigned int x0, unsigned int y0, unsig
         DrawVerticalLine(buffer, right_x, top_y, bottom_y+1, outline_color);
     }
 }
+
+void DrawCircle(img_buffer_t* buffer, unsigned int cx, unsigned int cy, unsigned int radius, bool outline, bool fill, const color_t outline_color, const color_t fill_color) {
+    int x = 0;
+    int y = (int)radius;
+    int d = 3 - 2 * (int)radius;
+    int current_y = -1;
+
+    while (y >= x) {
+        if (fill) {
+            if (current_y != y) {
+                current_y = y;
+                DrawHorizontalLine(buffer, cy + y, cx - x, cx + x, fill_color);
+                DrawHorizontalLine(buffer, cy - y, cx - x, cx + x, fill_color);
+            }
+            DrawHorizontalLine(buffer, cy + x, cx - y, cx + y, fill_color);
+            DrawHorizontalLine(buffer, cy - x, cx - y, cx + y, fill_color);
+        }
+
+        if (outline) {
+            PutPixel(buffer, cx + x, cy + y, outline_color);
+            PutPixel(buffer, cx - x, cy + y, outline_color);
+            PutPixel(buffer, cx + x, cy - y, outline_color);
+            PutPixel(buffer, cx - x, cy - y, outline_color);
+            PutPixel(buffer, cx + y, cy + x, outline_color);
+            PutPixel(buffer, cx - y, cy + x, outline_color);
+            PutPixel(buffer, cx + y, cy - x, outline_color);
+            PutPixel(buffer, cx - y, cy - x, outline_color);
+        }
+
+
+        if (d > 0) {
+            y--;
+            d = d + 4 * (x - y) + 10;
+        }
+        else {
+            d = d + 4 * x + 6;
+        }
+        x++;
+    }
+}

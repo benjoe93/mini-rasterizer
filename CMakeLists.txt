@@ -5,7 +5,6 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-set(FETCHCONTENT_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external)
 
 include(FetchContent)
 
@@ -31,10 +30,16 @@ set(HEADERS
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-target_compile_options(${PROJECT_NAME} PRIVATE "-Wall" "-Werror")
+
+# Make "saved" folder and pass into the project
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/saved)
+target_compile_definitions(${PROJECT_NAME} PRIVATE OUTPUT_DIR="${CMAKE_SOURCE_DIR}/saved")
 
 if(MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
+    target_compile_options(${PROJECT_NAME} PRIVATE "/W4" "/WX")
+else ()
+    target_compile_options(${PROJECT_NAME} PRIVATE "-Wall" "-Werror")
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)

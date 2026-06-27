@@ -7,7 +7,7 @@
 - [x] Draw vertical line
 - [x] Draw arbitrary line (Bresenham's line algorithm)
 - [x] Draw rectangle (filled and outline)
-- [ ] Draw circle (midpoint circle algorithm)
+- [x] Draw circle (midpoint circle algorithm)
 
 ## Stage 2: Windowed Display
 - [ ] Open a window with minifb

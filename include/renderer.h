@@ -63,4 +63,17 @@ void DrawLine(img_buffer_t* buffer, int x0, int y0, int x1, int y1, const color_
  * @param fill_color Color of the fill
  */
 void DrawRectangle(img_buffer_t* buffer, unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, bool outline, bool fill, const color_t outline_color, const color_t fill_color);
+
+/**
+ *
+ * @param buffer Flat Color array of size width * height
+ * @param cx center x-coordinate
+ * @param cy center y-coordinate
+ * @param radius radius of circle
+ * @param outline switch to draw outline
+ * @param fill switch to fill shape
+ * @param outline_color  color of the outline
+ * @param fill_color color of the fill
+ */
+void DrawCircle(img_buffer_t* buffer, unsigned int cx, unsigned int cy, unsigned int radius, bool outline, bool fill, const color_t outline_color, const color_t fill_color);
 #endif // MINI_RASTERIZER_RENDERER_H

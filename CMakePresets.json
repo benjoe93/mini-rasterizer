@@ -2,18 +2,23 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "default",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/intermediate/cmake",
+      "name": "debug",
+
+      "binaryDir": "${sourceDir}/intermediate/cmake/debug",
       "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "FETCHCONTENT_BASE_DIR": "${sourceDir}/external/debug"
       }
-    }
-  ],
-  "buildPresets": [
+    },
     {
-      "name": "default",
-      "configurePreset": "default"
+      "name": "release",
+      "binaryDir": "${sourceDir}/intermediate/cmake/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "FETCHCONTENT_BASE_DIR": "${sourceDir}/external/release"
+      }
     }
   ]
 }

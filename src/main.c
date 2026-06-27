@@ -7,7 +7,7 @@
 #define HEIGHT 600
 #define MAX_COLOR_VALUE 255
 
-#define OUT_PATH "../saved/out.ppm"
+#define OUT_PATH OUTPUT_DIR "/out.ppm"
 
 int main(void) {
     const img_details_t img = {OUT_PATH, MAX_COLOR_VALUE};
@@ -31,24 +31,24 @@ int main(void) {
     line_color = (color_t){255, 255, 0};
     DrawLine(&buffer, 790, 10, 10, 590, line_color);
 
+    // Draw astrix
     line_color = (color_t){0, 255, 0};
-    DrawLine(&buffer, 60, 340, 150, 150, line_color);
-    DrawLine(&buffer, 65, 335, 114, 186, line_color);
-    DrawLine(&buffer, 79, 321, 80, 220, line_color);
-    DrawLine(&buffer, 101, 299, 51, 249, line_color);
-    DrawLine(&buffer, 130, 270, 29, 271, line_color);
-    DrawLine(&buffer, 164, 236, 15, 285, line_color);
-    DrawLine(&buffer, 200, 200, 10, 290, line_color);
-    DrawLine(&buffer, 164, 236, 285, 15, line_color);
-    DrawLine(&buffer, 130, 270, 271, 29, line_color);
-    DrawLine(&buffer, 101, 299, 249, 51, line_color);
-    DrawLine(&buffer, 79, 321, 220, 80, line_color);
-    DrawLine(&buffer, 65, 335, 186, 114, line_color);
+    DrawLine(&buffer,  75, 150, 325, 150, line_color);
+    DrawLine(&buffer,  85, 102, 315, 198, line_color);
+    DrawLine(&buffer, 112,  62, 288, 238, line_color);
+    DrawLine(&buffer, 152,  35, 248, 265, line_color);
+    DrawLine(&buffer, 200,  25, 200, 275, line_color);
+    DrawLine(&buffer, 248,  35, 152, 265, line_color);
+    DrawLine(&buffer, 288,  62, 112, 238, line_color);
+    DrawLine(&buffer, 315, 102,  85, 198, line_color);
 
     // Draw axis-aligned rectangle
     line_color = (color_t){0, 255, 125};
     color_t fill_color = {0, 125, 255};
     DrawRectangle(&buffer, 700, 550, 500, 350, true, true, line_color, fill_color);
+
+    // Draw circle
+    DrawCircle(&buffer, 200, 450, 100, true, true, line_color, fill_color);
 
     // update image
     WriteToPpm(&buffer, &img);
