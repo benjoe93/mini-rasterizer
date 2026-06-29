@@ -10,105 +10,66 @@ void ClearScreen(img_buffer_t* buffer, const color_t color) {
     }
 }
 
-void PutPixel(img_buffer_t* buffer, const unsigned int x, const unsigned int y, const color_t color) {
-    if (x < buffer->width && y < buffer->height) {
-        const size_t index = (size_t)buffer->width * y + x;
-        buffer->pixels[index] = color;
-    }
+void PutPixel(img_buffer_t* buffer, int32_t x, int32_t y, const color_t color) {
+    if (x < 0 || y < 0 || x >= (int32_t)buffer->width || y >= (int32_t)buffer->height) { return; }
+    buffer->pixels[(size_t)y * buffer->width + x] = color;
 }
 
-void DrawHorizontalLine(img_buffer_t* buffer, unsigned int y, unsigned int x0, unsigned int x1, const color_t color) {
-    if (y >= buffer->height) {
-        fprintf(stderr,
-                "Out of bound `y` Coordinate! Value of `y` should be between 0 and "
-                "%u.\n",
-                buffer->height);
-        return;
-    }
-    if (x0 >= buffer->width) {
-        fprintf(stderr,
-                "Out of bound `x0` Coordinate! Value of `x0` should be between 0 "
-                "and %u.\n",
-                buffer->width);
-        return;
-    }
-    if (x1 > buffer->width) {
-        fprintf(stderr,
-                "Out of bound `x1` Coordinate! Value of `x1` should be between 0 "
-                "and %u.\n",
-                buffer->width);
-        return;
-    }
+void DrawHorizontalLine(img_buffer_t* buffer, int32_t y, int32_t x0, int32_t x1, const color_t color) {
+    if (y < 0 || y >= (int32_t)buffer->height) { return; }
+
     if (x0 > x1) {
-        unsigned int temp = x1;
-        x1 = x0;
-        x0 = temp;
-
-    }
-
-    for (size_t i = 0; i < x1 - x0; i++) {
-        size_t index = ((size_t)y * buffer->width) + x0 + i;
-        buffer->pixels[index] = color;
-    }
-}
-
-void DrawVerticalLine(img_buffer_t* buffer, unsigned int x, unsigned int y0, unsigned int y1, const color_t color) {
-    if (x >= buffer->width) {
-        fprintf(stderr,
-                "Out of bound `x` Coordinate! Value of `x` should be between 0 and "
-                "%u.\n",
-                buffer->width);
-        return;
-    }
-    if (y0 >= buffer->height) {
-        fprintf(stderr,
-                "Out of bound `y0` Coordinate! Value of `y0` should be between 0 "
-                "and %u.\n",
-                buffer->height);
-        return;
-    }
-    if (y1 > buffer->height) {
-        fprintf(stderr,
-                "Out of bound `y1` Coordinate! Value of `y1` should be between 0 "
-                "and %u.\n",
-                buffer->height);
-        return;
-    }
-    if (y0 > y1) {
-        unsigned int temp = y1;
-        y1 = y0;
-        y0 = temp;
-    }
-
-    const size_t start_offset = (size_t)buffer->width * y0;
-    for (size_t i = 0; i < y1 - y0; i++) {
-        size_t index = start_offset + x + ((size_t)buffer->width * i);
-        buffer->pixels[index] = color;
-    }
-}
-
-static void DrawLineH(img_buffer_t* buffer, int x0, int x1, int y0, int y1, const color_t color) {
-    if (x0 > x1) {
-        int x_temp = x0;
+        int32_t temp = x0;
         x0 = x1;
-        x1 = x_temp;
-
-        int y_temp = y0;
-        y0 = y1;
-        y1 = y_temp;
+        x1 = temp;
     }
 
-    int dx = x1 - x0;
-    int dy = y1 - y0;
+    // Clamp to buffer bounds
+    if (x0 < 0) { x0 = 0; }
+    if (x1 >= (int32_t)buffer->width) { x1 = (int32_t)buffer->width - 1; }
+    if (x0 > x1) { return; }
 
-    int dir = (dy < 0) ? -1 : 1;
+    for (int32_t i = x0; i <= x1; i++) {
+        buffer->pixels[(size_t)y * buffer->width + i] = color;
+    }
+}
+
+void DrawVerticalLine(img_buffer_t* buffer, int32_t x, int32_t y0, int32_t y1, const color_t color) {
+    if (x < 0 || x >= (int32_t)buffer->width) { return; }
+
+    if (y0 > y1) {
+        int32_t temp = y0;
+        y0 = y1;
+        y1 = temp;
+    }
+
+    // Clamp to buffer bounds
+    if (y0 < 0) { y0 = 0; }
+    if (y1 >= (int32_t)buffer->height) { y1 = (int32_t)buffer->height - 1; }
+    if (y0 > y1) { return; }
+
+    for (int32_t i = y0; i <= y1; i++) {
+        buffer->pixels[(size_t)i * buffer->width + x] = color;
+    }
+}
+
+static void DrawLineH(img_buffer_t* buffer, int32_t x0, int32_t x1, int32_t y0, int32_t y1, const color_t color) {
+    if (x0 > x1) {
+        int32_t x_temp = x0; x0 = x1; x1 = x_temp;
+        int32_t y_temp = y0; y0 = y1; y1 = y_temp;
+    }
+
+    int32_t dx = x1 - x0;
+    int32_t dy = y1 - y0;
+
+    int32_t dir = (dy < 0) ? -1 : 1;
     dy *= dir;
 
     if (dx != 0) {
-        int y = y0;
-        int p = 2 * dy - dx;
-        for (int i = 0; i < dx + 1; i++) {
-            PutPixel(buffer, (unsigned int)(x0 + i), (unsigned int)y, color);
+        int32_t y = y0;
+        int32_t p = 2 * dy - dx;
+        for (int32_t i = 0; i < dx + 1; i++) {
+            PutPixel(buffer, x0 + i, y, color);
             if (p >= 0) {
                 y += dir;
                 p = p - 2 * dx;
@@ -118,28 +79,23 @@ static void DrawLineH(img_buffer_t* buffer, int x0, int x1, int y0, int y1, cons
     }
 }
 
-static void DrawLineV(img_buffer_t* buffer, int x0, int x1, int y0, int y1, const color_t color) {
+static void DrawLineV(img_buffer_t* buffer, int32_t x0, int32_t x1, int32_t y0, int32_t y1, const color_t color) {
     if (y0 > y1) {
-        int x_temp = x0;
-        x0 = x1;
-        x1 = x_temp;
-
-        int y_temp = y0;
-        y0 = y1;
-        y1 = y_temp;
+        int32_t x_temp = x0; x0 = x1; x1 = x_temp;
+        int32_t y_temp = y0; y0 = y1; y1 = y_temp;
     }
 
-    int dx = x1 - x0;
-    int dy = y1 - y0;
+    int32_t dx = x1 - x0;
+    int32_t dy = y1 - y0;
 
-    int dir = (dx < 0) ? -1 : 1;
+    int32_t dir = (dx < 0) ? -1 : 1;
     dx *= dir;
 
     if (dy != 0) {
-        int x = x0;
-        int p = 2 * dx - dy;
-        for (int i = 0; i < dy + 1; i++) {
-            PutPixel(buffer, (unsigned int)x, (unsigned int)(y0 + i), color);
+        int32_t x = x0;
+        int32_t p = 2 * dx - dy;
+        for (int32_t i = 0; i < dy + 1; i++) {
+            PutPixel(buffer, x, y0 + i, color);
             if (p >= 0) {
                 x += dir;
                 p = p - 2 * dy;
@@ -149,53 +105,43 @@ static void DrawLineV(img_buffer_t* buffer, int x0, int x1, int y0, int y1, cons
     }
 }
 
-void DrawLine(img_buffer_t* buffer, int x0, int y0, int x1, int y1, const color_t color) {
+void DrawLine(img_buffer_t* buffer, int32_t x0, int32_t y0, int32_t x1, int32_t y1, const color_t color) {
     if (abs(x1 - x0) > abs(y1 - y0)) {
         DrawLineH(buffer, x0, x1, y0, y1, color);
-    }
-    else {
+    } else {
         DrawLineV(buffer, x0, x1, y0, y1, color);
     }
 }
 
-void DrawRectangle(img_buffer_t* buffer, unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, bool outline, bool fill, const color_t outline_color, const color_t fill_color) {
-    // Guard point positions
-    unsigned int left_x, right_x, top_y, bottom_y;
-    left_x = x0 < x1 ? x0 : x1;
-    right_x = x0 < x1 ? x1 : x0;
+void DrawRectangle(img_buffer_t* buffer, int32_t x0, int32_t y0, int32_t x1, int32_t y1, bool outline, bool fill, const color_t outline_color, const color_t fill_color) {
+    int32_t left_x   = x0 < x1 ? x0 : x1;
+    int32_t right_x  = x0 < x1 ? x1 : x0;
+    int32_t top_y    = y0 < y1 ? y0 : y1;
+    int32_t bottom_y = y0 < y1 ? y1 : y0;
 
-    top_y = y0 < y1 ? y0 : y1;
-    bottom_y = y0 < y1 ? y1 : y0;
-
-    // Draw fill
     if (fill) {
-        for (unsigned int y = top_y; y <= bottom_y; y++) {
-            DrawHorizontalLine(buffer, y, left_x, right_x+1, fill_color);
+        for (int32_t y = top_y; y <= bottom_y; y++) {
+            DrawHorizontalLine(buffer, y, left_x, right_x, fill_color);
         }
     }
 
-    // Draw outline
     if (outline) {
-        DrawHorizontalLine(buffer, top_y, left_x, right_x+1, outline_color);
-        DrawHorizontalLine(buffer, bottom_y, left_x, right_x+1, outline_color);
-        DrawVerticalLine(buffer, left_x, top_y, bottom_y+1, outline_color);
-        DrawVerticalLine(buffer, right_x, top_y, bottom_y+1, outline_color);
+        DrawHorizontalLine(buffer, top_y,    left_x, right_x, outline_color);
+        DrawHorizontalLine(buffer, bottom_y, left_x, right_x, outline_color);
+        DrawVerticalLine(buffer, left_x,  top_y, bottom_y, outline_color);
+        DrawVerticalLine(buffer, right_x, top_y, bottom_y, outline_color);
     }
 }
 
-void DrawCircle(img_buffer_t* buffer, unsigned int cx, unsigned int cy, unsigned int radius, bool outline, bool fill, const color_t outline_color, const color_t fill_color) {
-    int x = 0;
-    int y = (int)radius;
-    int d = 3 - 2 * (int)radius;
-    int current_y = -1;
+void DrawCircle(img_buffer_t* buffer, int32_t cx, int32_t cy, int32_t radius, bool outline, bool fill, const color_t outline_color, const color_t fill_color) {
+    int32_t x = 0;
+    int32_t y = radius;
+    int32_t d = 3 - 2 * radius;
 
     while (y >= x) {
         if (fill) {
-            if (current_y != y) {
-                current_y = y;
-                DrawHorizontalLine(buffer, cy + y, cx - x, cx + x, fill_color);
-                DrawHorizontalLine(buffer, cy - y, cx - x, cx + x, fill_color);
-            }
+            DrawHorizontalLine(buffer, cy + y, cx - x, cx + x, fill_color);
+            DrawHorizontalLine(buffer, cy - y, cx - x, cx + x, fill_color);
             DrawHorizontalLine(buffer, cy + x, cx - y, cx + y, fill_color);
             DrawHorizontalLine(buffer, cy - x, cx - y, cx + y, fill_color);
         }
@@ -211,13 +157,11 @@ void DrawCircle(img_buffer_t* buffer, unsigned int cx, unsigned int cy, unsigned
             PutPixel(buffer, cx - y, cy - x, outline_color);
         }
 
-
         if (d > 0) {
             y--;
-            d = d + 4 * (x - y) + 10;
-        }
-        else {
-            d = d + 4 * x + 6;
+            d += 4 * (x - y) + 10;
+        } else {
+            d += 4 * x + 6;
         }
         x++;
     }

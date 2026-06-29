@@ -2,7 +2,7 @@
 #include "file_utils.h"
 #include <stdio.h>
 
-void WriteToPpm(const img_buffer_t *buffer, const img_details_t *image) {
+void WriteToPpm(const img_buffer_t* buffer, const img_details_t* image) {
   // open file
   FILE *file = fopen(image->path, "w");
   if (file == NULL) {
@@ -23,3 +23,13 @@ void WriteToPpm(const img_buffer_t *buffer, const img_details_t *image) {
   // close file
   fclose(file);
 }
+
+void ConvertToUint32(const img_buffer_t* src, uint32_t* dst) {
+  for (size_t i = 0; i < src->height * src->width; i++) {
+    dst[i]  = ((uint32_t)src->pixels[i].r << 16)
+            | ((uint32_t)src->pixels[i].g << 8)
+            | ((uint32_t)src->pixels[i].b);
+  }
+}
+
+

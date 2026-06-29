@@ -5,7 +5,7 @@
 /**
  * RGB Color definition
  */
-typedef struct color {
+typedef struct {
   uint8_t r;
   uint8_t g;
   uint8_t b;
@@ -14,7 +14,7 @@ typedef struct color {
 /**
  * Export related image file details
  */
-typedef struct img_details {
+typedef struct {
   const char *path;
   uint8_t max_val;
 } img_details_t;
@@ -22,10 +22,15 @@ typedef struct img_details {
 /**
  * Texture buffer details
  */
-typedef struct img_buffer {
+typedef struct {
   color_t *pixels;
   uint32_t width;
   uint32_t height;
 } img_buffer_t;
+
+typedef struct {
+  img_buffer_t* buffer;
+  img_details_t* img;
+} screenshot_ctx_t;
 
 #endif // MINI_RASTERIZER_TYPES_H
