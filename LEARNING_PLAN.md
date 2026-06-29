@@ -10,15 +10,15 @@
 - [x] Draw circle (midpoint circle algorithm)
 
 ## Stage 2: Windowed Display
-- [ ] Open a window with minifb
-- [ ] Render pixel buffer to window each frame
-- [ ] Handle window close / ESC key
-- [ ] Basic frame loop (update → render)
+- [x] Open a window with minifb
+- [x] Render pixel buffer to window each frame
+- [x] Handle window close / ESC key
+- [x] Basic frame loop (update → render)
 
 ## Stage 3: 2D Math Foundations
-- [ ] Vec2 struct (float x, y) and basic ops (add, sub, scale, dot)
-- [ ] Lerp (linear interpolation) between two values
-- [ ] Map/remap a value between ranges
+- [x] Vec2 struct (float x, y) and basic ops (add, sub, scale, dot)
+- [x] Lerp (linear interpolation) between two values
+- [x] Map/remap a value between ranges
 
 ## Stage 4: Triangle Rasterization
 - [ ] Draw triangle outline (3 lines)

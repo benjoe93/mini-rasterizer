@@ -19,6 +19,7 @@ FetchContent_MakeAvailable(minifb)
 set(SOURCES
     "src/main.c"
     "src/file_utils.c"
+    "src/math_utils.c"
     "src/renderer.c"
 )
 
