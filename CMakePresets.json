@@ -20,5 +20,9 @@
         "FETCHCONTENT_BASE_DIR": "${sourceDir}/external/release"
       }
     }
+  ],
+  "buildPresets": [
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "release", "configurePreset": "release" }
   ]
 }

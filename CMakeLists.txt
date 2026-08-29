@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.29)
-project(mini_rasterizer C)
+project(mini_rasterizer C CXX)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -13,6 +13,12 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/emoon/minifb.git
         GIT_TAG        v0.10.1
 )
+
+set(MINIFB_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(MINIFB_USE_OPENGL_API OFF CACHE BOOL "" FORCE)
+endif()
 
 FetchContent_MakeAvailable(minifb)
 
@@ -31,6 +37,7 @@ set(HEADERS
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 # Make "saved" folder and pass into the project
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/saved)
