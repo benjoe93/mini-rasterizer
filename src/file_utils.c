@@ -32,4 +32,3 @@ void ConvertToUint32(const img_buffer_t* src, uint32_t* dst) {
   }
 }
 
-

@@ -1,6 +1,11 @@
 CompileFlags:
-  CompilationDatabase: "intermediate/cmake"
+  CompilationDatabase: "intermediate/cmake/debug"
 
 Style:
   BasedOnStyle: LLVM
   IndentWidth: 4
+  ColumnLimit: 120
+  BreakBeforeBraces: Attach
+  AllowShortBlocksOnASingleLine: Always
+  AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+  PointerAlignment: Left

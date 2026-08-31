@@ -2,32 +2,32 @@
 #define MINI_RASTERIZER_MATH_UTILS_H
 // Vectors, matrices, transformations
 
-typedef struct Vector2 {
+typedef struct  {
     float x;
     float y;
-} Vector2;
+} vec2_t;
 
-typedef struct Vector3 {
+typedef struct  {
     float x;
     float y;
     float z;
-} Vector3;
+} vec3_t;
 
-typedef struct Vector4 {
+typedef struct  {
     float x;
     float y;
     float z;
     float w;
-} Vector4;
+} vec4_t;
 
-float Lerpf(float a, float b, float t);
-float Remapf(float value, float in_min, float in_max, float out_min, float out_max);
+float learp_f(float a, float b, float t);
+float remap_f(float value, float in_min, float in_max, float out_min, float out_max);
 
-Vector2 Vec2Add(Vector2 a, Vector2 b);
-Vector2 Vec2Sub(Vector2 a, Vector2 b);
-Vector2 Vec2Multiply(Vector2 a, Vector2 b);
-Vector2 Vec2Scale(Vector2 vector, float scaler);
-Vector2 Vec2Lerp(Vector2 a, Vector2 b, float t);
-float Vec2Dot(Vector2 a, Vector2 b);
-
+vec2_t vec2_add(vec2_t a, vec2_t b);
+vec2_t vec2_sub(vec2_t a, vec2_t b);
+vec2_t vec2_mult(vec2_t a, vec2_t b);
+vec2_t vec2_scale(vec2_t vector, float scaler);
+vec2_t vec2_lerp(vec2_t a, vec2_t b, float t);
+float vec2_dot(vec2_t a, vec2_t b);
+void vec2_swap(vec2_t* a, vec2_t* b);
 #endif //MINI_RASTERIZER_MATH_UTILS_H

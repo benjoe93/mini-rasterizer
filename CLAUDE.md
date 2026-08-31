@@ -8,40 +8,53 @@ This is a learning project. Claude's role is research and explanation only — d
 
 ## Build
 
-Uses CMake with a preset that places build artifacts in `intermediate/cmake/` and the final binary in `bin/`.
+Uses CMake presets (`debug` / `release`) that place build artifacts in `intermediate/cmake/<preset>/` and the final binary in `bin/`.
 
 ```powershell
 # Configure (first time or after CMakeLists.txt changes)
-cmake --preset default
+cmake --preset debug
 
 # Build
-cmake --build --preset default
+cmake --build --preset debug
 
-# Run (Windows)
+# Run (Windows, multi-config generator e.g. Visual Studio)
 .\bin\Debug\mini_rasterizer.exe
-
-# Run (Linux/WSL)
-./bin/Debug/mini_rasterizer
 ```
 
-The minifb dependency is fetched automatically via `FetchContent` on first configure into `external/`.
+### Linux
+
+On Linux, CMake defaults to the Unix Makefiles generator, which is single-config — there's no `Debug`/`Release` subdirectory under `bin/`; the binary always lands at `bin/mini_rasterizer` regardless of which preset built it (the *previous* build's binary is simply overwritten if you switch presets).
+
+```bash
+# Debug build + run
+cmake --preset debug
+cmake --build --preset debug
+./bin/mini_rasterizer
+
+# Release build + run
+cmake --preset release
+cmake --build --preset release
+./bin/mini_rasterizer
+```
+
+Each preset gets its own build tree (`intermediate/cmake/debug/` vs `intermediate/cmake/release/`) and its own vendored minifb checkout (`external/debug/` vs `external/release/`), so switching presets never requires a clean — just re-run `cmake --preset <name>` if it hasn't been configured yet, then `cmake --build --preset <name>`.
+
+The minifb dependency is fetched automatically via `FetchContent` on first configure into `external/<preset>/`.
 
 ## Architecture
 
-This is a C99 software rasterizer learning project. Progress and next steps are tracked in `LEARNING_PLAN.md`. The current output path is PPM file rendering (`saved/out.ppm`); a live window path via minifb exists in `src/minifb_setup.c` but is not yet wired into `main`.
+This is a C99 software rasterizer learning project. Progress and next steps are tracked in `LEARNING_PLAN.md`. minifb is fully wired into `main` and drives the primary render loop; PPM export still exists but now runs on demand (press `P`) rather than unconditionally at startup.
 
-**Core types** (`include/types.h`): `Color` (R/G/B ints) and `ImgDetails` (path, width, height, max_val) are the primitive data types used throughout.
+**Core types** (`include/types.h`): `color_t` (r/g/b `uint8_t`), `img_details_t` (path, max_val), `img_buffer_t` (pixels, width, height), and `screenshot_ctx_t` (bundles a buffer + img_details for the keyboard callback).
 
-**Planned module structure** (headers exist as stubs):
-- `include/renderer.h` — rasterization pipeline logic
-- `include/math_utils.h` — vectors, matrices, transformations
-- `include/mesh.h` — geometry definitions (Cube, Pyramid)
+**Module status**:
+- `include/renderer.h` / `src/renderer.c` — implemented: `ClearScreen`, `PutPixel`, `DrawHorizontalLine`, `DrawVerticalLine`, `DrawLine` (Bresenham), `DrawRectangle`, `DrawCircle` (midpoint algorithm). Triangle rasterization (Stage 4) not yet started.
+- `include/math_utils.h` / `src/math_utils.c` — implemented: `Lerpf`, `Remapf`, and `Vector2` ops (add/sub/multiply/scale/lerp/dot). `Vector3`/`Vector4` structs are declared but have no ops yet (Stage 5).
+- `include/mesh.h` — still an empty stub (Cube/Pyramid geometry, not started).
 
 **Current rendering flow** (`src/main.c`):
-1. Allocate a flat `Color*` framebuffer (`WIDTH * HEIGHT`)
-2. Fill with clear color, draw primitives by writing into `x + y * WIDTH` indexed slots
-3. Call `WriteToPpm()` to serialize to PPM P3 format
+1. Open a resizable minifb window and allocate a flat `color_t*` framebuffer (`WIDTH * HEIGHT`) plus a `uint32_t*` scratch buffer for minifb.
+2. Each frame: `ClearScreen`, draw primitives into the `color_t*` buffer, then `ConvertToUint32()` into the `uint32_t*` (0xRRGGBB packed) buffer and hand it to `mfb_update_ex` / `mfb_wait_sync`.
+3. A keyboard callback (`screenshot_callback`) calls `WriteToPpm()` on `P` keypress to serialize the current `color_t*` buffer to PPM P3 format.
 
-**minifb integration** (`src/minifb_setup.c`): `window_setup()` opens a resizable window and drives a render loop using `mfb_update_ex` / `mfb_wait_sync`. The framebuffer here is `uint32_t*` (0xRRGGBB packed), distinct from the `Color*` struct used in the PPM path.
-
-**Output**: PPM files go to `../../saved/out.ppm` relative to the binary (i.e., `saved/` at the repo root).
+**Output**: PPM files go to `saved/out.ppm` at the repo root — the path is baked in via the `OUTPUT_DIR` compile definition set in `CMakeLists.txt` (`${CMAKE_SOURCE_DIR}/saved`), not a relative path from the binary.

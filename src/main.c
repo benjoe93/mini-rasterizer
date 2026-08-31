@@ -48,9 +48,9 @@ int main(void) {
 
         // draw line middle of the image
         color_t line_color = {255, 0, 0};
-        DrawHorizontalLine(&buffer, 300, 0, buffer.width, line_color);
+        HorizontalLine(&buffer, 300, 0, buffer.width, line_color);
 
-        DrawVerticalLine(&buffer, 400, 0, buffer.height, line_color);
+        VerticalLine(&buffer, 400, 0, buffer.height, line_color);
 
         line_color = (color_t){255, 255, 0};
         DrawLine(&buffer, 790, 10, 10, 590, line_color);

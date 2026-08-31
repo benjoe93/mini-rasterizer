@@ -2,6 +2,7 @@
 #define MINI_RASTERIZER_RENDERER_H
 // Rasterization pipeline logic
 
+#include "math_utils.h"
 #include "types.h"
 #include <stdbool.h>
 
@@ -33,7 +34,7 @@ void PutPixel(img_buffer_t* buffer, int32_t x, int32_t y, const color_t color);
  * @param x1 End column (inclusive)
  * @param color Line color
  */
-void DrawHorizontalLine(img_buffer_t* buffer, int32_t y, int32_t x0, int32_t x1, const color_t color);
+void HorizontalLine(img_buffer_t* buffer, int32_t y, int32_t x0, int32_t x1, const color_t color);
 
 /**
  * Draws a vertical line down a single column of the framebuffer.
@@ -45,7 +46,7 @@ void DrawHorizontalLine(img_buffer_t* buffer, int32_t y, int32_t x0, int32_t x1,
  * @param y1 End row (inclusive)
  * @param color Line color
  */
-void DrawVerticalLine(img_buffer_t* buffer, int32_t x, int32_t y0, int32_t y1, const color_t color);
+void VerticalLine(img_buffer_t* buffer, int32_t x, int32_t y0, int32_t y1, const color_t color);
 
 /**
  * Draw line with Bresenham's algorithm
@@ -87,5 +88,27 @@ void DrawRectangle(img_buffer_t* buffer, int32_t x0, int32_t y0, int32_t x1, int
  * @param fill_color Color of the fill
  */
 void DrawCircle(img_buffer_t* buffer, int32_t cx, int32_t cy, int32_t radius, bool outline, bool fill, const color_t outline_color, const color_t fill_color);
+
+/**
+ * Draw triangle outline with specified color
+ *
+ * @param buffer Flat Color array of size width * height
+ * @param v0 Location of corner a
+ * @param v1 Location of corner b
+ * @param v2 Location of corner c
+ * @param outline_color Color of the outline
+ */
+void DrawTriangleOutline(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, const color_t outline_color);
+
+/**
+ * Draw flat bottom triangle
+ *
+ * @param buffer Flat Color array of size width * height
+ * @param v0 Location of corner a
+ * @param v1 Location of corner b
+ * @param v2 Location of corner c
+ * @param fill_color Color used to fill the shape
+ */
+void FlatBottomTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, const color_t fill_color);
 
 #endif // MINI_RASTERIZER_RENDERER_H
