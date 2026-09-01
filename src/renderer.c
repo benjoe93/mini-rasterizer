@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -239,6 +240,32 @@ void FlatBottomTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, c
     // fill triange line-by-line
     for (size_t y_offset = 0; y_offset <= v1.y - v0.y; y_offset++) {
         int32_t current_y = v0.y + y_offset;
+        HorizontalLine(buffer, current_y, (int32_t)current_x1, (int32_t)current_x2, fill_color);
+        current_x1 += inv_slope_1;
+        current_x2 += inv_slope_2;
+    }
+}
+
+void FlatTopTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, const color_t fill_color) {
+    // sort corners vertically
+    if (v0.y < v1.y) vec2_swap(&v0, &v1);
+    if (v1.y < v2.y) vec2_swap(&v1, &v2);
+    if (v0.y < v1.y) vec2_swap(&v0, &v1);
+
+    // check if flat top
+    if (v1.y != v2.y) return;
+
+    // caluclate slope
+    float inv_slope_1 = (v0.x - v1.x) / (v0.y - v1.y);
+    float inv_slope_2 = (v0.x - v2.x) / (v0.y - v2.y);
+
+    // set current x values
+    float current_x1 = v1.x;
+    float current_x2 = v2.x;
+
+    // fill triange line-by-line
+    for (size_t y_offset = 0; y_offset <= v0.y - v1.y; y_offset++) {
+        int32_t current_y = v1.y + y_offset;
         HorizontalLine(buffer, current_y, (int32_t)current_x1, (int32_t)current_x2, fill_color);
         current_x1 += inv_slope_1;
         current_x2 += inv_slope_2;

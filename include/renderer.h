@@ -111,4 +111,15 @@ void DrawTriangleOutline(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, 
  */
 void FlatBottomTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, const color_t fill_color);
 
+/**
+ * Draw flat top triangle
+ *
+ * @param buffer Flat Color array of size width * height
+ * @param v0 Location of corner a
+ * @param v1 Location of corner b
+ * @param v2 Location of corner c
+ * @param fill_color Color used to fill the shape
+ */
+void FlatTopTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, const color_t fill_color);
+
 #endif // MINI_RASTERIZER_RENDERER_H
