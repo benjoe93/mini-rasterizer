@@ -21,10 +21,10 @@
 - [x] Map/remap a value between ranges
 
 ## Stage 4: Triangle Rasterization
-- [ ] Draw triangle outline (3 lines)
-- [ ] Fill flat-bottom triangle
-- [ ] Fill flat-top triangle
-- [ ] Fill arbitrary triangle (split into flat-bottom + flat-top)
+- [x] Draw triangle outline (3 lines)
+- [x] Fill flat-bottom triangle
+- [x] Fill flat-top triangle
+- [x] Fill arbitrary triangle (split into flat-bottom + flat-top)
 - [ ] Barycentric coordinates — compute for a point inside a triangle
 
 ## Stage 5: 3D Math Foundations

@@ -4,20 +4,20 @@
     {
       "name": "debug",
 
-      "binaryDir": "${sourceDir}/intermediate/cmake/debug",
+      "binaryDir": "${sourceDir}/build/debug/intermediate/",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "FETCHCONTENT_BASE_DIR": "${sourceDir}/external/debug"
+        "FETCHCONTENT_BASE_DIR": "${sourceDir}/build/debug/external"
       }
     },
     {
       "name": "release",
-      "binaryDir": "${sourceDir}/intermediate/cmake/release",
+      "binaryDir": "${sourceDir}build/release/intermediate",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "FETCHCONTENT_BASE_DIR": "${sourceDir}/external/release"
+        "FETCHCONTENT_BASE_DIR": "${sourceDir}/build/release/external/"
       }
     }
   ],

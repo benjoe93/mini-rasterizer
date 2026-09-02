@@ -229,7 +229,7 @@ void FlatBottomTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, c
     // check if v2 and v3 are flat
     if (v1.y != v2.y) return;
 
-    // caluclate slope of edges
+    // calculate slope of edges
     float inv_slope_1 = (v1.x - v0.x) / (v1.y - v0.y);
     float inv_slope_2 = (v2.x - v0.x) / (v2.y - v0.y);
 
@@ -237,9 +237,9 @@ void FlatBottomTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, c
     float current_x1 = v0.x;
     float current_x2 = v0.x;
 
-    // fill triange line-by-line
+    // fill triangle line-by-line
     for (size_t y_offset = 0; y_offset <= v1.y - v0.y; y_offset++) {
-        int32_t current_y = v0.y + y_offset;
+        int32_t current_y = (int32_t)(v0.y + y_offset);
         HorizontalLine(buffer, current_y, (int32_t)current_x1, (int32_t)current_x2, fill_color);
         current_x1 += inv_slope_1;
         current_x2 += inv_slope_2;
@@ -255,7 +255,7 @@ void FlatTopTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, cons
     // check if flat top
     if (v1.y != v2.y) return;
 
-    // caluclate slope
+    // calculate slope
     float inv_slope_1 = (v0.x - v1.x) / (v0.y - v1.y);
     float inv_slope_2 = (v0.x - v2.x) / (v0.y - v2.y);
 
@@ -263,11 +263,35 @@ void FlatTopTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, cons
     float current_x1 = v1.x;
     float current_x2 = v2.x;
 
-    // fill triange line-by-line
+    // fill triangle line-by-line
     for (size_t y_offset = 0; y_offset <= v0.y - v1.y; y_offset++) {
-        int32_t current_y = v1.y + y_offset;
+        int32_t current_y = (int32_t)(v1.y + y_offset);
         HorizontalLine(buffer, current_y, (int32_t)current_x1, (int32_t)current_x2, fill_color);
         current_x1 += inv_slope_1;
         current_x2 += inv_slope_2;
     }
+}
+
+void DrawTriangle(img_buffer_t* buffer, vec2_t v0, vec2_t v1, vec2_t v2, const color_t fill_color) {
+  // sort corners vertically
+  if (v0.y > v1.y) vec2_swap(&v0, &v1);
+  if (v1.y > v2.y) vec2_swap(&v1, &v2);
+  if (v0.y > v1.y) vec2_swap(&v0, &v1);
+
+  if (v0.y == v1.y) {
+    FlatTopTriangle(buffer, v0, v1, v2, fill_color);
+  }
+  else if (v1.y == v2.y) {
+    FlatBottomTriangle(buffer, v0, v1, v2, fill_color);
+  }
+  else {
+    // calculate split
+    vec2_t v3 = {.x = 0.0f, .y = 0.0f};
+    v3.y = v1.y;
+    const float t = (v1.y - v0.y) / (v2.y - v0.y);
+    v3.x = lerp_f(v0.x, v2.x, t);
+
+    FlatBottomTriangle(buffer, v0, v1, v3, fill_color);
+    FlatTopTriangle(buffer, v1, v2, v3, fill_color);
+  }
 }

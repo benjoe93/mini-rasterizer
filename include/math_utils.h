@@ -20,7 +20,7 @@ typedef struct  {
     float w;
 } vec4_t;
 
-float learp_f(float a, float b, float t);
+float lerp_f(float a, float b, float t);
 float remap_f(float value, float in_min, float in_max, float out_min, float out_max);
 
 vec2_t vec2_add(vec2_t a, vec2_t b);

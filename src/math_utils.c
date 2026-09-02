@@ -1,6 +1,6 @@
 #include "math_utils.h"
 
-float learp_f(float a, float b, float t) { return a + (b - a) * t; }
+float lerp_f(float a, float b, float t) { return a + (b - a) * t; }
 
 float remap_f(float value, float in_min, float in_max, float out_min,
              float out_max) {
@@ -37,8 +37,8 @@ vec2_t vec2_scale(vec2_t vector, float scaler) {
 
 vec2_t vec2_lerp(vec2_t a, vec2_t b, float t) {
   return (vec2_t){
-      .x = learp_f(a.x, b.x, t),
-      .y = learp_f(a.y, b.y, t),
+      .x = lerp_f(a.x, b.x, t),
+      .y = lerp_f(a.y, b.y, t),
   };
 }
 
