@@ -33,6 +33,7 @@ set(HEADERS
     "include/file_utils.h"
     "include/math_utils.h"
     "include/renderer.h"
+    "include/scenes.h"
     "include/types.h"
 )
 
